@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Meetings" EntityType="CatalogService.Meetings"/>
+                <FunctionImport Name="userInfo" Function="CatalogService.userInfo"/>
+            </EntityContainer>
+            <EntityType Name="Meetings">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="title" Type="Edm.String" MaxLength="100"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="date" Type="Edm.DateTimeOffset"/>
+            </EntityType>
+            <ComplexType Name="userScopes">
+                <Property Name="identified" Type="Edm.Boolean"/>
+                <Property Name="authenticated" Type="Edm.Boolean"/>
+                <Property Name="Viewer" Type="Edm.Boolean"/>
+                <Property Name="Admin" Type="Edm.Boolean"/>
+            </ComplexType>
+            <ComplexType Name="userType">
+                <Property Name="user" Type="Edm.String"/>
+                <Property Name="locale" Type="Edm.String"/>
+                <Property Name="scopes" Type="CatalogService.userScopes"/>
+            </ComplexType>
+            <Function Name="userInfo" IsBound="false" IsComposable="false">
+                <ReturnType Type="CatalogService.userType"/>
+            </Function>
+            <Annotations Target="CatalogService.Meetings/ID">
+                <Annotation Term="Core.Computed" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
